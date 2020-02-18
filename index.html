@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>My awesome watch feature!</title>
+  </head>
+  <body>
+    <input oninput="setSearch()" id="search" />
+    <p id="result">Resultado:</p>
+  </body>
+  <script>
+    const search = document.getElementById('search')
+    const result = document.getElementById('result')
+
+    function debounce(func, time = 0) {
+      let timeout
+
+      function debouncer() {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          func.apply(this, arguments)
+        }, time)
+      }
+
+      return debouncer
+    }
+
+    function setSearch() {
+      data.search = search.value
+    }
+
+    const data = new Proxy(
+      {
+        search: '',
+        result: '',
+        database: ['Vue.js', 'React.js', 'Angular.js', 'Ember.js']
+      },
+      {
+        set(target, key, value) {
+          target[key] = value
+          watch[key](value)
+        }
+      }
+    )
+
+    const watch = {
+      search: debounce(function(value) {
+        data.result = data.database.find(el => el === value) || '-'
+      }, 800),
+      result: function(value) {
+        result.innerHTML = 'Resultado: ' + value
+      }
+    }
+  </script>
+</html>
